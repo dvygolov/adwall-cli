@@ -1,0 +1,66 @@
+{
+  "title": "AdWall first-party GraphQL APIs",
+  "observed_at": "2026-08-03",
+  "web_build_id": "gpX1PeVh5bt3lwzFLqoC0",
+  "status": "unofficial reverse-engineered first-party web APIs",
+  "endpoints": {
+    "api": "https://adwall.io/api/graphql",
+    "stats": "https://adwall.io/stats-api/graphql",
+    "proxies": "https://adwall.io/proxies-api/graphql",
+    "admin": "https://adwall.io/admin-api/graphql"
+  },
+  "auth": {
+    "type": "Bearer access and refresh tokens",
+    "login": "SignIn(email, password)",
+    "refresh": "RenewTokens with the refresh token as Bearer authorization",
+    "storage": "CLI-owned JSON session file; browser storage is not used"
+  },
+  "operations": [
+    {"endpoint": "api", "type": "mutation", "name": "SignIn", "cli": "auth login"},
+    {"endpoint": "api", "type": "mutation", "name": "RenewTokens", "cli": "automatic"},
+    {"endpoint": "api", "type": "query", "name": "GetCurrentUser", "cli": "auth status"},
+    {"endpoint": "api", "type": "query", "name": "GetAds", "cli": "creatives search"},
+    {"endpoint": "api", "type": "query", "name": "GetAd", "cli": "creatives get"},
+    {"endpoint": "api", "type": "query", "name": "GetAdsCategories", "cli": "dictionaries categories"},
+    {"endpoint": "api", "type": "query", "name": "GetCountriesDictionaries", "cli": "dictionaries countries"},
+    {"endpoint": "api", "type": "query", "name": "GetCountriesLanguages", "cli": "dictionaries languages"},
+    {"endpoint": "api", "type": "query", "name": "GetFavorites", "cli": "favorites list"},
+    {"endpoint": "api", "type": "mutation", "name": "AddAdToFavorites", "cli": "favorites add"},
+    {"endpoint": "api", "type": "mutation", "name": "RemoveAdFromFavorites", "cli": "favorites remove"},
+    {"endpoint": "api", "type": "mutation", "name": "ToggleAdInFavorites", "cli": "favorites toggle"},
+    {"endpoint": "api", "type": "query", "name": "GetBlacklistRules", "cli": "blacklist rules"},
+    {"endpoint": "api", "type": "query", "name": "GetDirectlyBlacklistedAds", "cli": "blacklist direct"},
+    {"endpoint": "api", "type": "query", "name": "GetBlacklistedAds", "cli": "blacklist affected"},
+    {"endpoint": "api", "type": "mutation", "name": "CreateBlacklistRuleBasedOnAttribute", "cli": "blacklist add-rule"},
+    {"endpoint": "api", "type": "mutation", "name": "RemoveBlacklistRule", "cli": "blacklist remove-rule"},
+    {"endpoint": "api", "type": "mutation", "name": "RemoveAllBlacklistRulesThatAffectAd", "cli": "blacklist clear-ad"},
+    {"endpoint": "stats", "type": "query", "name": "FindAppCoverageReports", "cli": "apps search"},
+    {"endpoint": "proxies", "type": "query", "name": "FindMyWebpageArchivals", "cli": "archives list"},
+    {"endpoint": "proxies", "type": "mutation", "name": "InitializeWebpageArchival", "cli": "archives create"},
+    {"endpoint": "proxies", "type": "mutation", "name": "RetryFailedWebpageArchival", "cli": "archives retry"}
+  ],
+  "ads_filter_input": {
+    "attachedCategoryIds": "[ObjectId!]",
+    "callToActionTypes": "[CallToActionKey!]",
+    "creationPeriod": "DatePeriodInput {startDate, endDate}",
+    "deliveryPeriod": "DatePeriodInput {startDate, endDate}",
+    "hasAdditionalAssets": "Boolean",
+    "includesLeadTypeForm": "Boolean",
+    "languages": "[String!]",
+    "mediaDisplayFormats": ["Carousel", "Image", "None", "Video"],
+    "metaPage": "MetaPageInput {id}",
+    "publisherPlatforms": ["AudienceNetwork", "Facebook", "Instagram", "Messenger", "Oculus", "Threads", "WhatsApp"],
+    "shownInCountries": "[String!]",
+    "shownInTotalCountries": "Int",
+    "specialCategories": ["CreditAds", "EmploymentAds", "HousingAds", "PoliticalAndIssueAds"],
+    "targetApp": "TargetAppInput {hosting, id, platform}",
+    "targetLink": "TargetLinkInput {contentInspection, hostname, ipAddress, topLevelDomain, topLevelDomainsList}",
+    "textSearch": "SearchInFieldsInput {creativeBody, creativeLinkText, metaPageName, targetLinkUrl, textOnImages}"
+  },
+  "app_enums": {
+    "AppHosting": ["AppStore", "GooglePlay"],
+    "AppPlatform": ["Android", "IOs"],
+    "BlacklistAttribute": ["AppId", "FbPageId", "Hostname", "IpAddress"],
+    "AdsDataset": ["Unique"]
+  }
+}
