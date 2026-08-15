@@ -15,7 +15,7 @@ def _unquote(value: str) -> str:
 
 
 def load_dotenv(path: str | os.PathLike[str] | None = None) -> Path | None:
-    """Load a small .env file without overriding real environment variables."""
+    """Load a small .env file without overriding process environment values."""
     explicit = Path(path).expanduser() if path else None
     candidates = [explicit] if explicit else []
     if not explicit:
@@ -46,46 +46,30 @@ def load_dotenv(path: str | os.PathLike[str] | None = None) -> Path | None:
 
 @dataclass(frozen=True)
 class Settings:
-    api_url: str
-    stats_api_url: str
-    proxies_api_url: str
-    admin_api_url: str
-    email: str | None
-    password: str | None
-    session_file: Path
+    base_url: str
+    api_key: str | None
     timeout: float
     env_file: Path | None
 
     @classmethod
     def from_env(cls, env_file: str | None = None) -> "Settings":
         loaded = load_dotenv(env_file)
-        session_raw = os.environ.get("ADWALL_SESSION_FILE", ".adwall-session.json")
-        session_file = Path(session_raw).expanduser()
-        if not session_file.is_absolute():
-            anchor = loaded.parent if loaded else Path.cwd()
-            session_file = anchor / session_file
         try:
             timeout = float(os.environ.get("ADWALL_TIMEOUT", "60"))
         except ValueError as exc:
             raise ConfigError("ADWALL_TIMEOUT must be a number") from exc
         if timeout <= 0:
             raise ConfigError("ADWALL_TIMEOUT must be positive")
+
+        base_url = os.environ.get("ADWALL_BASE_URL", "https://adwall.io/api")
+        base_url = base_url.strip().rstrip("/")
+        if not base_url.startswith(("https://", "http://")):
+            raise ConfigError("ADWALL_BASE_URL must be an HTTP(S) URL")
+
+        api_key = os.environ.get("ADWALL_API_KEY", "").strip() or None
         return cls(
-            api_url=os.environ.get(
-                "ADWALL_API_URL", "https://adwall.io/api/graphql"
-            ),
-            stats_api_url=os.environ.get(
-                "ADWALL_STATS_API_URL", "https://adwall.io/stats-api/graphql"
-            ),
-            proxies_api_url=os.environ.get(
-                "ADWALL_PROXIES_API_URL", "https://adwall.io/proxies-api/graphql"
-            ),
-            admin_api_url=os.environ.get(
-                "ADWALL_ADMIN_API_URL", "https://adwall.io/admin-api/graphql"
-            ),
-            email=os.environ.get("ADWALL_EMAIL") or None,
-            password=os.environ.get("ADWALL_PASSWORD") or None,
-            session_file=session_file.resolve(),
+            base_url=base_url,
+            api_key=api_key,
             timeout=timeout,
             env_file=loaded,
         )

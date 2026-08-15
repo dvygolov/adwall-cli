@@ -1,4 +1,4 @@
 interface:
   display_name: "AdWall API"
-  short_description: "Search and manage AdWall advertising data"
-  default_prompt: "Use $adwall-api to find relevant AdWall creatives and return structured JSON."
+  short_description: "Search official AdWall creative data"
+  default_prompt: "Use $adwall-api to search authorized AdWall creatives and return the requested structured results."

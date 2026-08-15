@@ -19,9 +19,9 @@ FILES = [
     Path("src/adwall_cli/client.py"),
     Path("src/adwall_cli/config.py"),
     Path("src/adwall_cli/errors.py"),
-    Path("src/adwall_cli/graphql.py"),
     Path("src/adwall_cli/output.py"),
 ]
+STALE_FILES = [Path("src/adwall_cli/graphql.py")]
 
 
 def synchronized() -> bool:
@@ -29,7 +29,7 @@ def synchronized() -> bool:
         (TARGET / rel).is_file()
         and filecmp.cmp(SOURCE / rel, TARGET / rel, shallow=False)
         for rel in FILES
-    )
+    ) and all(not (TARGET / rel).exists() for rel in STALE_FILES)
 
 
 def sync() -> None:
@@ -37,6 +37,10 @@ def sync() -> None:
         destination = TARGET / rel
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(SOURCE / rel, destination)
+    for rel in STALE_FILES:
+        stale = TARGET / rel
+        if stale.exists():
+            stale.unlink()
 
 
 def main() -> None:

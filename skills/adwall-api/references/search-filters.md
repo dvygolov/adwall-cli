@@ -1,42 +1,39 @@
 # Search filters
 
-Use:
+Use `python scripts/adwall.py creatives search [options]`.
 
-```text
-python scripts/adwall.py creatives search [options]
-```
-
-| CLI | GraphQL input | Values |
+| CLI option | REST query parameter | Meaning |
 |---|---|---|
-| `--query`, `--text-body` | `textSearch.creativeBody` | ad body text |
-| `--page-name` | `textSearch.metaPageName` | Facebook Page name |
-| `--image-text` | `textSearch.textOnImages` | OCR text |
-| `--link-text` | `textSearch.creativeLinkText` | creative link text |
-| `--url` | `textSearch.targetLinkUrl` | full URL or substring |
-| `--country` | `shownInCountries` | repeat ISO code |
-| `--countries-count` | `shownInTotalCountries` | integer |
-| `--language` | `languages` | repeat ISO language |
-| `--format` | `mediaDisplayFormats` | Carousel, Image, None, Video |
-| `--placement` | `publisherPlatforms` | Meta placement |
-| `--created-from/to` | `creationPeriod` | both YYYY-MM-DD |
-| `--delivery-from/to` | `deliveryPeriod` | both YYYY-MM-DD |
-| `--hostname` | `targetLink.hostname` | hostname |
-| `--ip-address` | `targetLink.ipAddress` | IP address |
-| `--tld` | `targetLink.topLevelDomainsList` | domain zone |
-| `--app-id` | `targetApp.id` | application ID |
-| `--app-platform` | `targetApp.platform` | Android, IOs |
-| `--app-hosting` | `targetApp.hosting` | AppStore, GooglePlay |
-| `--meta-page-id` | `metaPage.id` | Facebook Page ID |
-| `--lead-form` | `includesLeadTypeForm` | yes, no |
-| `--cta` | `callToActionTypes` | CallToActionKey |
-| `--category-id` | `attachedCategoryIds` | AdWall category ID |
-| `--cloaked` | `contentInspection.isProbablyCloaked` | yes, no |
-| `--additional-assets` | `hasAdditionalAssets` | yes, no |
-| `--special-category` | `specialCategories` | Meta special category |
+| `--q` | `q` | Creative body text |
+| `--advertiser` | `advertiser` | Advertiser / Meta Page |
+| `--target-url` | `target_url` | Target URL or substring |
+| `--link-text` | `link_text` | Link text |
+| `--image-text` | `image_text` | OCR image text |
+| `--geo` | `geo` | Delivery geography |
+| `--language` | `language` | Language |
+| `--platform` | `platform` | Publisher platform |
+| `--format` | `format` | Creative format |
+| `--cta` | `cta` | Call to action |
+| `--category-id` | `category_id` | AdWall category ID |
+| `--published-from` | `published_from` | Publication interval start |
+| `--published-to` | `published_to` | Publication interval end |
+| `--running-from` | `running_from` | Delivery interval start |
+| `--running-to` | `running_to` | Delivery interval end |
+| `--domain` | `domain` | Target domain |
+| `--tld` | `tld` | Top-level domain |
+| `--app` | `app` | Application |
+| `--app-platform` | `app_platform` | Application platform |
+| `--special-category` | `special_category` | Meta special category |
+| `--countries-count` | `countries_count` | Number of countries |
+| `--sort` | `sort` | Sort field/mode |
+| `--order` | `order` | Sort direction |
+| `--limit` | `limit` | Page size, 1–50 |
+| `--cursor` | `cursor` | Cursor from `nextCursor` |
 
-Placements: `AudienceNetwork Facebook Instagram Messenger Oculus Threads
-WhatsApp`.
+Use ISO-style dates such as `2026-08-15`. Query `api capabilities` instead of
+guessing accepted platform, format, CTA, category, app-platform, special
+category, sort, or order values.
 
-Get category IDs with `dictionaries categories`. The response is cursor-based:
-use `--after`, or bounded `--all-pages --max-pages N`. The default dataset is
-`Unique`, matching the first-party UI.
+Expect newest-first results when no sort is specified. Use reach sorting only
+for EU creatives. Avoid assuming that multiple values or repeated flags are
+supported unless the current capabilities/OpenAPI document says so.

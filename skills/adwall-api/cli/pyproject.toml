@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "adwall-cli"
-version = "0.1.0"
-description = "Agent-first CLI for the internal AdWall GraphQL APIs"
+version = "1.0.0"
+description = "Agent-first CLI for the official AdWall Agent REST API"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Yellow Web" }]
-keywords = ["adwall", "cli", "advertising", "creatives", "graphql"]
+keywords = ["adwall", "cli", "advertising", "creatives", "rest", "api"]
 classifiers = [
   "Environment :: Console",
   "License :: OSI Approved :: MIT License",

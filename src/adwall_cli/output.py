@@ -40,4 +40,7 @@ def error_payload(exc: Exception) -> dict[str, Any]:
         value = getattr(exc, name, None)
         if value is not None:
             payload[name] = value
+    response_meta = getattr(exc, "response_meta", None)
+    if response_meta:
+        payload["responseMeta"] = response_meta
     return payload
