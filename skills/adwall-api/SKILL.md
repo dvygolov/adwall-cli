@@ -9,9 +9,10 @@ Use the bundled `scripts/adwall.py` launcher. Emit JSON. Require Python 3.10+.
 
 ## Configure
 
-Read `ADWALL_API_KEY` from `.env` or the environment. If absent, ask the user
-to create an Agent API key in AdWall and save it locally. Never request, print,
-summarize, or commit the key.
+Read `ADWALL_API_KEY` from the process environment, an explicit
+`ADWALL_ENV_FILE`, or the skill-local `.env`. If absent, ask the user to create
+an Agent API key in AdWall and save it locally. Never request, print, summarize,
+or commit the key.
 
 ```powershell
 python scripts/adwall.py auth status
